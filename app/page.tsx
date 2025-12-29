@@ -8,14 +8,21 @@ export default function Home() {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [planData, setPlanData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     setLoading(true);
+    setError(null);
     try {
       const response = await fetch(`${API_BASE_URL}${ENDPOINTS.CREATE_MUSIC_PLAN}?description=${encodeURIComponent(description)}`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       const data = await response.json();
       setPlanData(data);
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setError(errorMessage);
       console.error('Error generating music plan:', error);
     } finally {
       setLoading(false);
@@ -40,6 +47,12 @@ export default function Home() {
         >
           {loading ? 'Generating...' : 'Generate Music Plan'}
         </button>
+        {error && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded">
+            <h2 className="text-lg font-semibold mb-2 text-red-800">Error:</h2>
+            <p className="text-red-700">{error}</p>
+          </div>
+        )}
         {planData && (
           <div className="mt-4 p-4 bg-gray-50 rounded">
             <h2 className="text-lg font-semibold mb-2">Music Plan:</h2>
