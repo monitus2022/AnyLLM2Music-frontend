@@ -17,40 +17,7 @@ This repo includes the frontend UI for [AnyLLM2Music Backend](https://github.com
 - [ ] Description generate music plan and available for preview, user interaction for updating
 - [ ] Editing after generating midi at preview stage
 
-# Dependencies
-
-- `Next.js`
-
-# Installation
-
-## Prerequisites
-- Node.js (version 16 or higher) - Download from [nodejs.org](https://nodejs.org/)
-- npm (comes with Node.js) or yarn
-
-## Setup
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/monitus2022/AnyLLM2Music-frontend.git
-   cd AnyLLM2Music-frontend
-
-2. Install dependencies:
-   ```bash
-    npm install
-
-3. Start the development server:
-
-   ```bash
-    npm run dev
-
-4. Open http://localhost:3000 in your browser to view the app.
-
-    (Optional) Build for production:
-   ```bash
-    npm run build
-    npm start
-
----------------------------------------
-
+-------------------------------------------------
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
@@ -73,6 +40,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Environment Setup
+
+1. Copy the environment template:
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+2. Edit `.env.local` to configure your backend API URL:
+   ```
+   NEXT_PUBLIC_API_BASE_URL=http://your-backend-url:port
+   ```
 
 ## Learn More
 
