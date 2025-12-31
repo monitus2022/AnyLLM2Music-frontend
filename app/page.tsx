@@ -33,6 +33,8 @@ export default function Home() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h1 className="text-2xl font-bold mb-4 text-black">AnyLLM2Music</h1>
+        <p className="text-black">Can any LLM produce meaningful music? Let's find it out.</p>
+        <br />
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
