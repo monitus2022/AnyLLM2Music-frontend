@@ -63,56 +63,56 @@ export default function Home() {
   const renderMusicPlan = (data: MusicPlan) => (
     <div>
       <div className="mb-4">
-        <h3 className="font-semibold">Genre & Style</h3>
-        <p>{data.genre_style}</p>
+        <h3 className="font-semibold text-black">Genre & Style</h3>
+        <p className="text-black">{data.genre_style}</p>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Mood & Emotion</h3>
-        <p>{data.mood_emotion}</p>
+        <h3 className="font-semibold text-black">Mood & Emotion</h3>
+        <p className="text-black">{data.mood_emotion}</p>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Tempo & Feel</h3>
-        <p>{data.tempo_feel.bpm} BPM, {data.tempo_feel.meter}, {data.tempo_feel.feel}</p>
+        <h3 className="font-semibold text-black">Tempo & Feel</h3>
+        <p className="text-black">{data.tempo_feel.bpm} BPM, {data.tempo_feel.meter}, {data.tempo_feel.feel}</p>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Key & Tonality</h3>
-        <p>{data.key_tonality}</p>
+        <h3 className="font-semibold text-black">Key & Tonality</h3>
+        <p className="text-black">{data.key_tonality}</p>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Instruments</h3>
-        <ul className="list-disc list-inside">
+        <h3 className="font-semibold text-black">Instruments</h3>
+        <ul className="list-disc list-inside text-black">
           {data.instruments.map((inst, idx) => (
             <li key={idx}>{inst.name} - {inst.role}</li>
           ))}
         </ul>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Structure</h3>
-        <ul className="list-disc list-inside">
+        <h3 className="font-semibold text-black">Structure</h3>
+        <ul className="list-disc list-inside text-black">
           {data.structure.map((sec, idx) => (
             <li key={idx}>{sec.section}: {sec.bars} bars, {sec.transition}</li>
           ))}
         </ul>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Motivic Ideas</h3>
-        <ul className="list-disc list-inside">
+        <h3 className="font-semibold text-black">Motivic Ideas</h3>
+        <ul className="list-disc list-inside text-black">
           {Object.entries(data.motivic_ideas).map(([key, value]) => (
-            <li key={key}><strong>{key}:</strong> {value}</li>
+            <li key={key}><strong className="text-black">{key}:</strong> {value}</li>
           ))}
         </ul>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Dynamic Contour</h3>
-        <p>{data.dynamic_contour}</p>
+        <h3 className="font-semibold text-black">Dynamic Contour</h3>
+        <p className="text-black">{data.dynamic_contour}</p>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Length & Scale</h3>
-        <p>{data.length_scale.total_bars} bars, {data.length_scale.duration_seconds}</p>
+        <h3 className="font-semibold text-black">Length & Scale</h3>
+        <p className="text-black">{data.length_scale.total_bars} bars, {data.length_scale.duration_seconds}</p>
       </div>
       <div className="mb-4">
-        <h3 className="font-semibold">Looping Behavior</h3>
-        <p>{data.looping_behavior}</p>
+        <h3 className="font-semibold text-black">Looping Behavior</h3>
+        <p className="text-black">{data.looping_behavior}</p>
       </div>
     </div>
   );
