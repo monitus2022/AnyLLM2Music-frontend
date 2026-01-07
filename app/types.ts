@@ -47,3 +47,20 @@ export interface ChordResponse {
   key: string;
   sections: ChordSection[];
 }
+
+export interface RhythmSection {
+  section: string;
+  bars: number;
+  bass: string[];
+  perc: string[];
+  melody: string[];
+  harmony: string[];
+  voiceLeading: string[];
+  dynamics: string[];
+  polyphony: string;
+  loop: string;
+}
+
+export interface RhythmResponse {
+  sections: RhythmSection[];
+}

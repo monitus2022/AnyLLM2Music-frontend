@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { generatePlan, generateChords } from './services/apiService';
-import { MusicPlan, MidiResponse, Kwarg, ChordResponse } from './types';
+import { generatePlan, generateChords, generateRhythm } from './services/apiService';
+import { MusicPlan, MidiResponse, Kwarg, ChordResponse, RhythmResponse } from './types';
 import MusicForm from './components/MusicForm';
 import ErrorDisplay from './components/ErrorDisplay';
 import MusicPlanEditor from './components/MusicPlanEditor';
 import ChordDisplay from './components/ChordDisplay';
+import RhythmDisplay from './components/RhythmDisplay';
 import MidiDisplay from './components/MidiDisplay';
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [midiData, setMidiData] = useState<MidiResponse | null>(null);
   const [chordData, setChordData] = useState<ChordResponse | null>(null);
+  const [rhythmData, setRhythmData] = useState<RhythmResponse | null>(null);
   const [musicPlan, setMusicPlan] = useState<MusicPlan | null>(null);
   const [editingPlan, setEditingPlan] = useState<MusicPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +27,7 @@ export default function Home() {
     setError(null);
     setMidiData(null);
     setChordData(null);
+    setRhythmData(null);
     setMusicPlan(null);
     setEditingPlan(null);
     try {
@@ -63,6 +66,21 @@ export default function Home() {
       setLoading(false);
     }
   };
+
+  const handleGenerateRhythm = async () => {
+    if (!chordData) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await generateRhythm(description, chordData);
+      setRhythmData(data);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-xl">
@@ -89,6 +107,18 @@ export default function Home() {
           loading={loading}
         />
         <ChordDisplay chordData={chordData} />
+        {chordData && !rhythmData && (
+          <div className="mt-4">
+            <button
+              onClick={handleGenerateRhythm}
+              disabled={loading}
+              className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
+            >
+              {loading ? 'Generating Rhythm...' : 'Generate Rhythm'}
+            </button>
+          </div>
+        )}
+        <RhythmDisplay rhythmData={rhythmData} />
         <MidiDisplay midiData={midiData} />
       </div>
     </div>

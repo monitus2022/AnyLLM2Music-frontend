@@ -76,3 +76,99 @@ const music_chord_request = {
     "looping_behavior": "Seamless loop A-B-A"
   }
 }
+
+const music_rhythm_request = {
+  "description": "8-bit music",
+  "music_chords": {
+    "key": "C minor",
+    "sections": [
+      {
+        "name": "Intro",
+        "bars": 2,
+        "chords": [
+          "Cm",
+          "Ab"
+        ],
+        "motifs": {
+          "Intro": [
+            1,
+            2
+          ]
+        },
+        "loop": "build to A"
+      },
+      {
+        "name": "A",
+        "bars": 4,
+        "chords": [
+          "Cm",
+          "Bb",
+          "Ab",
+          "Eb"
+        ],
+        "motifs": {
+          "A": [
+            3,
+            4,
+            5,
+            6
+          ]
+        },
+        "loop": "to B"
+      },
+      {
+        "name": "B",
+        "bars": 4,
+        "chords": [
+          "Fm",
+          "G",
+          "Ab",
+          "Bb"
+        ],
+        "motifs": {
+          "B": [
+            7,
+            8,
+            9,
+            10
+          ]
+        },
+        "loop": "back to A"
+      },
+      {
+        "name": "A",
+        "bars": 4,
+        "chords": [
+          "Cm",
+          "Bb",
+          "Ab",
+          "Eb"
+        ],
+        "motifs": {
+          "A": [
+            11,
+            12,
+            13,
+            14
+          ]
+        },
+        "loop": "to Outro"
+      },
+      {
+        "name": "Outro",
+        "bars": 2,
+        "chords": [
+          "Bb",
+          "Cm"
+        ],
+        "motifs": {
+          "Outro": [
+            15,
+            16
+          ]
+        },
+        "loop": "fade out"
+      }
+    ]
+  }
+}
