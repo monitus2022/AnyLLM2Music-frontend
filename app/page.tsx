@@ -40,6 +40,9 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [planData, setPlanData] = useState<MusicPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notesLoading, setNotesLoading] = useState(false);
+  const [notesData, setNotesData] = useState<any>(null);
+  const [notesError, setNotesError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -57,6 +60,25 @@ export default function Home() {
       console.error('Error generating music plan:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubmitNotes = async () => {
+    setNotesLoading(true);
+    setNotesError(null);
+    try {
+      const response = await fetch(`${API_BASE_URL}${ENDPOINTS.CREATE_MUSIC_NOTES}?description=${encodeURIComponent(description)}`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setNotesData(data);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setNotesError(errorMessage);
+      console.error('Error generating music notes:', error);
+    } finally {
+      setNotesLoading(false);
     }
   };
 
@@ -136,16 +158,35 @@ export default function Home() {
         >
           {loading ? 'Generating...' : 'Generate Music Plan'}
         </button>
+        <button
+          onClick={handleSubmitNotes}
+          disabled={notesLoading || !description.trim()}
+          className="w-full bg-green-500 text-white p-2 rounded mb-4 disabled:opacity-50"
+        >
+          {notesLoading ? 'Generating...' : 'Generate Music Notes'}
+        </button>
         {error && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded">
             <h2 className="text-lg font-semibold mb-2 text-red-800">Error:</h2>
             <p className="text-red-700">{error}</p>
           </div>
         )}
+        {notesError && (
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded">
+            <h2 className="text-lg font-semibold mb-2 text-red-800">Notes Error:</h2>
+            <p className="text-red-700">{notesError}</p>
+          </div>
+        )}
         {planData && (
           <div className="mt-4 p-4 bg-gray-50 rounded">
             <h2 className="text-lg font-semibold mb-2">Music Plan:</h2>
             {renderMusicPlan(planData)}
+          </div>
+        )}
+        {notesData && (
+          <div className="mt-4 p-4 bg-gray-50 rounded">
+            <h2 className="text-lg font-semibold mb-2">Music Notes:</h2>
+            <pre className="text-sm text-black whitespace-pre-wrap">{JSON.stringify(notesData, null, 2)}</pre>
           </div>
         )}
       </div>
