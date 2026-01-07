@@ -291,7 +291,7 @@ export default function Home() {
                       newInstruments[index].name = e.target.value;
                       handlePlanUpdate('instruments', newInstruments);
                     }}
-                    className="flex-1 p-2 border rounded text-black"
+                    className="w-32 p-2 border rounded text-black"
                   />
                   <input
                     type="text"
@@ -302,7 +302,7 @@ export default function Home() {
                       newInstruments[index].role = e.target.value;
                       handlePlanUpdate('instruments', newInstruments);
                     }}
-                    className="flex-1 p-2 border rounded text-black"
+                    className="w-32 p-2 border rounded text-black"
                   />
                   <button
                     onClick={() => {
@@ -336,7 +336,7 @@ export default function Home() {
                       newStructure[index].section = e.target.value;
                       handlePlanUpdate('structure', newStructure);
                     }}
-                    className="flex-1 p-2 border rounded text-black"
+                    className="w-32 p-2 border rounded text-black"
                   />
                   <input
                     type="number"
@@ -347,7 +347,7 @@ export default function Home() {
                       newStructure[index].bars = parseInt(e.target.value) || 0;
                       handlePlanUpdate('structure', newStructure);
                     }}
-                    className="flex-1 p-2 border rounded text-black"
+                    className="w-20 p-2 border rounded text-black"
                   />
                   <input
                     type="text"
@@ -358,7 +358,7 @@ export default function Home() {
                       newStructure[index].transition = e.target.value;
                       handlePlanUpdate('structure', newStructure);
                     }}
-                    className="flex-1 p-2 border rounded text-black"
+                    className="w-32 p-2 border rounded text-black"
                   />
                   <button
                     onClick={() => {
