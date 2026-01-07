@@ -43,6 +43,8 @@ export default function Home() {
   const [musicPlan, setMusicPlan] = useState<MusicPlan | null>(null);
   const [editingPlan, setEditingPlan] = useState<MusicPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [model, setModel] = useState('');
+  const [kwargs, setKwargs] = useState<Array<{key: string, value: string}>>([]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -51,6 +53,10 @@ export default function Home() {
     setMusicPlan(null);
     setEditingPlan(null);
     try {
+      const kwargsObj = kwargs.reduce((acc, {key, value}) => {
+        if (key.trim()) acc[key.trim()] = value.trim();
+        return acc;
+      }, {} as Record<string, string>);
       const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`, {
         method: 'POST',
         headers: {
@@ -58,8 +64,8 @@ export default function Home() {
         },
         body: JSON.stringify({
           description,
-          model: 'llama3',
-          kwargs: {}
+          model,
+          kwargs: kwargsObj
         }),
       });
       if (!response.ok) {
@@ -141,6 +147,60 @@ export default function Home() {
           className="w-full p-2 border rounded mb-4 text-black"
           rows={4}
         />
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1 text-black">Model:</label>
+          <input
+            type="text"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            placeholder="Enter model name (leave empty for default)"
+            className="w-full p-2 border rounded text-black"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2 text-black">Additional Parameters (kwargs):</label>
+          {kwargs.map((param, index) => (
+            <div key={index} className="flex gap-2 mb-2">
+              <input
+                type="text"
+                placeholder="Key"
+                value={param.key}
+                onChange={(e) => {
+                  const newKwargs = [...kwargs];
+                  newKwargs[index].key = e.target.value;
+                  setKwargs(newKwargs);
+                }}
+                className="w-32 p-2 border rounded text-black"
+              />
+              <input
+                type="text"
+                placeholder="Value"
+                value={param.value}
+                onChange={(e) => {
+                  const newKwargs = [...kwargs];
+                  newKwargs[index].value = e.target.value;
+                  setKwargs(newKwargs);
+                }}
+                className="w-32 p-2 border rounded text-black"
+              />
+              <button
+                onClick={() => {
+                  const newKwargs = kwargs.filter((_, i) => i !== index);
+                  setKwargs(newKwargs);
+                }}
+                className="px-3 py-2 bg-red-500 text-white rounded"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() => setKwargs([...kwargs, { key: '', value: '' }])}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Add Parameter
+          </button>
+        </div>
         <button
           onClick={handleSubmit}
           disabled={loading || !description.trim()}
