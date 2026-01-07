@@ -1,4 +1,5 @@
 const music_plan_response = {
+    "description": "8-bit music",
     "genre_style": "8-bit chiptune (NES-style square waves, triangle bass, noise percussion)",
     "mood_emotion": "Energetic and upbeat",
     "tempo_feel": {
@@ -61,7 +62,95 @@ const music_plan_response = {
     "looping_behavior": "Seamless loop from end of A back to A"
 };
 
-const generate_midi_from_description_resposne = {
-    "description": "8-bit music",
-    "midi_data": "midi_b64_encoded_string_here"
+const music_chord_response = {
+  "key": "C minor",
+  "sections": [
+    {
+      "name": "Intro",
+      "bars": 2,
+      "chords": [
+        "Cm",
+        "Ab"
+      ],
+      "motifs": {
+        "Intro": [
+          1,
+          2
+        ]
+      },
+      "loop": "build to A"
+    },
+    {
+      "name": "A",
+      "bars": 4,
+      "chords": [
+        "Cm",
+        "Bb",
+        "Ab",
+        "Eb"
+      ],
+      "motifs": {
+        "A": [
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "loop": "to B"
+    },
+    {
+      "name": "B",
+      "bars": 4,
+      "chords": [
+        "Fm",
+        "G",
+        "Ab",
+        "Bb"
+      ],
+      "motifs": {
+        "B": [
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "loop": "back to A"
+    },
+    {
+      "name": "A",
+      "bars": 4,
+      "chords": [
+        "Cm",
+        "Bb",
+        "Ab",
+        "Eb"
+      ],
+      "motifs": {
+        "A": [
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "loop": "to Outro"
+    },
+    {
+      "name": "Outro",
+      "bars": 2,
+      "chords": [
+        "Bb",
+        "Cm"
+      ],
+      "motifs": {
+        "Outro": [
+          15,
+          16
+        ]
+      },
+      "loop": "fade out"
+    }
+  ]
 }

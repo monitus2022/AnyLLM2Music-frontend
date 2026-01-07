@@ -51,7 +51,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
     try {
-      const data = await generateChords(editingPlan);
+      const data = await generateChords(description, editingPlan);
       // For now, just log or handle the response; next step would process chords
       console.log('Generated chords:', data);
       // TODO: Handle chords response and proceed to rhythm or midi

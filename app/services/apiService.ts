@@ -20,13 +20,16 @@ export const generatePlan = async (description: string, model: string, kwargs: R
   return response.json();
 };
 
-export const generateChords = async (plan: MusicPlan): Promise<any> => {
+export const generateChords = async (description: string, plan: MusicPlan): Promise<any> => {
   const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_CHORDS}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(plan),
+    body: JSON.stringify({
+      description,
+      music_plan: plan
+    }),
   });
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
