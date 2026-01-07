@@ -4,140 +4,55 @@ import { useState } from 'react';
 import { API_BASE_URL } from './config';
 import { ENDPOINTS } from './api';
 
-interface Instrument {
-  name: string;
-  role: string;
-}
-
-interface StructureSection {
-  section: string;
-  bars: number;
-  transition: string;
-}
-
-interface MusicPlan {
-  genre_style: string;
-  mood_emotion: string;
-  tempo_feel: {
-    bpm: number;
-    meter: string;
-    feel: string;
-  };
-  key_tonality: string;
-  instruments: Instrument[];
-  structure: StructureSection[];
-  motivic_ideas: Record<string, string>;
-  dynamic_contour: string;
-  length_scale: {
-    total_bars: number;
-    duration_seconds: string;
-  };
-  looping_behavior: string;
+interface MidiResponse {
+  description: string;
+  midi_data: string;
 }
 
 export default function Home() {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
-  const [planData, setPlanData] = useState<MusicPlan | null>(null);
+  const [midiData, setMidiData] = useState<MidiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [notesLoading, setNotesLoading] = useState(false);
-  const [notesData, setNotesData] = useState<any>(null);
-  const [notesError, setNotesError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
+    setMidiData(null);
     try {
-      const response = await fetch(`${API_BASE_URL}${ENDPOINTS.CREATE_MUSIC_PLAN}?description=${encodeURIComponent(description)}`);
+      const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_MIDI_FROM_DESCRIPTION}?description=${encodeURIComponent(description)}`);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
       const data = await response.json();
-      setPlanData(data as MusicPlan);
+      setMidiData(data as MidiResponse);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
-      console.error('Error generating music plan:', error);
+      console.error('Error generating MIDI:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmitNotes = async () => {
-    setNotesLoading(true);
-    setNotesError(null);
-    try {
-      const response = await fetch(`${API_BASE_URL}${ENDPOINTS.CREATE_MUSIC_NOTES}?description=${encodeURIComponent(description)}`);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      const data = await response.json();
-      setNotesData(data);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      setNotesError(errorMessage);
-      console.error('Error generating music notes:', error);
-    } finally {
-      setNotesLoading(false);
+  const downloadMidi = () => {
+    if (!midiData) return;
+    const byteCharacters = atob(midiData.midi_data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'audio/midi' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'generated.mid';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
-
-  const renderMusicPlan = (data: MusicPlan) => (
-    <div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Genre & Style</h3>
-        <p className="text-black">{data.genre_style}</p>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Mood & Emotion</h3>
-        <p className="text-black">{data.mood_emotion}</p>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Tempo & Feel</h3>
-        <p className="text-black">{data.tempo_feel.bpm} BPM, {data.tempo_feel.meter}, {data.tempo_feel.feel}</p>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Key & Tonality</h3>
-        <p className="text-black">{data.key_tonality}</p>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Instruments</h3>
-        <ul className="list-disc list-inside text-black">
-          {data.instruments.map((inst, idx) => (
-            <li key={idx}>{inst.name} - {inst.role}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Structure</h3>
-        <ul className="list-disc list-inside text-black">
-          {data.structure.map((sec, idx) => (
-            <li key={idx}>{sec.section}: {sec.bars} bars, {sec.transition}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Motivic Ideas</h3>
-        <ul className="list-disc list-inside text-black">
-          {Object.entries(data.motivic_ideas).map(([key, value]) => (
-            <li key={key}><strong className="text-black">{key}:</strong> {value}</li>
-          ))}
-        </ul>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Dynamic Contour</h3>
-        <p className="text-black">{data.dynamic_contour}</p>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Length & Scale</h3>
-        <p className="text-black">{data.length_scale.total_bars} bars, {data.length_scale.duration_seconds}</p>
-      </div>
-      <div className="mb-4">
-        <h3 className="font-semibold text-black">Looping Behavior</h3>
-        <p className="text-black">{data.looping_behavior}</p>
-      </div>
-    </div>
-  );
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
@@ -156,14 +71,7 @@ export default function Home() {
           disabled={loading || !description.trim()}
           className="w-full bg-blue-500 text-white p-2 rounded mb-4 disabled:opacity-50"
         >
-          {loading ? 'Generating...' : 'Generate Music Plan'}
-        </button>
-        <button
-          onClick={handleSubmitNotes}
-          disabled={notesLoading || !description.trim()}
-          className="w-full bg-green-500 text-white p-2 rounded mb-4 disabled:opacity-50"
-        >
-          {notesLoading ? 'Generating...' : 'Generate Music Notes'}
+          {loading ? 'Generating...' : 'Generate MIDI'}
         </button>
         {error && (
           <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded">
@@ -171,22 +79,16 @@ export default function Home() {
             <p className="text-red-700">{error}</p>
           </div>
         )}
-        {notesError && (
-          <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded">
-            <h2 className="text-lg font-semibold mb-2 text-red-800">Notes Error:</h2>
-            <p className="text-red-700">{notesError}</p>
-          </div>
-        )}
-        {planData && (
+        {midiData && (
           <div className="mt-4 p-4 bg-gray-50 rounded">
-            <h2 className="text-lg font-semibold mb-2">Music Plan:</h2>
-            {renderMusicPlan(planData)}
-          </div>
-        )}
-        {notesData && (
-          <div className="mt-4 p-4 bg-gray-50 rounded">
-            <h2 className="text-lg font-semibold mb-2">Music Notes:</h2>
-            <pre className="text-sm text-black whitespace-pre-wrap">{JSON.stringify(notesData, null, 2)}</pre>
+            <h2 className="text-lg font-semibold mb-2">Generated MIDI:</h2>
+            <p className="text-black mb-4">{midiData.description}</p>
+            <button
+              onClick={downloadMidi}
+              className="bg-green-500 text-white p-2 rounded"
+            >
+              Download MIDI File
+            </button>
           </div>
         )}
       </div>
