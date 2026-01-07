@@ -2,16 +2,18 @@
 
 import { useState } from 'react';
 import { generatePlan, generateChords } from './services/apiService';
-import { MusicPlan, MidiResponse, Kwarg } from './types';
+import { MusicPlan, MidiResponse, Kwarg, ChordResponse } from './types';
 import MusicForm from './components/MusicForm';
 import ErrorDisplay from './components/ErrorDisplay';
 import MusicPlanEditor from './components/MusicPlanEditor';
+import ChordDisplay from './components/ChordDisplay';
 import MidiDisplay from './components/MidiDisplay';
 
 export default function Home() {
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [midiData, setMidiData] = useState<MidiResponse | null>(null);
+  const [chordData, setChordData] = useState<ChordResponse | null>(null);
   const [musicPlan, setMusicPlan] = useState<MusicPlan | null>(null);
   const [editingPlan, setEditingPlan] = useState<MusicPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -22,6 +24,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
     setMidiData(null);
+    setChordData(null);
     setMusicPlan(null);
     setEditingPlan(null);
     try {
@@ -52,10 +55,7 @@ export default function Home() {
     setError(null);
     try {
       const data = await generateChords(description, editingPlan);
-      // For now, just log or handle the response; next step would process chords
-      console.log('Generated chords:', data);
-      // TODO: Handle chords response and proceed to rhythm or midi
-      alert('Chords generated! Check console for details.');
+      setChordData(data);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
@@ -88,6 +88,7 @@ export default function Home() {
           onSubmitPlan={handleSubmitPlan}
           loading={loading}
         />
+        <ChordDisplay chordData={chordData} />
         <MidiDisplay midiData={midiData} />
       </div>
     </div>

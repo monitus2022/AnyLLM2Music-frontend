@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../config';
 import { ENDPOINTS } from '../api';
-import { MusicPlan } from '../types';
+import { MusicPlan, ChordResponse } from '../types';
 
 export const generatePlan = async (description: string, model: string, kwargs: Record<string, string>): Promise<MusicPlan> => {
   const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`, {
@@ -20,7 +20,7 @@ export const generatePlan = async (description: string, model: string, kwargs: R
   return response.json();
 };
 
-export const generateChords = async (description: string, plan: MusicPlan): Promise<any> => {
+export const generateChords = async (description: string, plan: MusicPlan): Promise<ChordResponse> => {
   const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_CHORDS}`, {
     method: 'POST',
     headers: {

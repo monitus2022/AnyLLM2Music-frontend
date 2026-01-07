@@ -34,3 +34,16 @@ export interface Kwarg {
   key: string;
   value: string;
 }
+
+export interface ChordSection {
+  name: string;
+  bars: number;
+  chords: string[];
+  motifs: Record<string, number[]>;
+  loop: string;
+}
+
+export interface ChordResponse {
+  key: string;
+  sections: ChordSection[];
+}
