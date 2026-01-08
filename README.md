@@ -25,9 +25,10 @@ graph TD;
 ## Progress (MVP)
 
 - [x] Simple UI to enter description, returns midi
-- [ ] Midi convert to music and available for download, allow choice of soundfonts
-- [ ] Description generate music plan and available for preview, user interaction for updating
-- [ ] Editing after generating midi at preview stage
+- [x] Midi convert to music and available for download, allow choice of soundfonts
+- [x] Description generate music plan and available for preview, user interaction for updating
+- [ ] Add extra parameter and chat to edit music plan dynamically
+- [ ] Editing after generating midi at preview stage, allow audio preview before downloading
 
 -------------------------------------------------
 
