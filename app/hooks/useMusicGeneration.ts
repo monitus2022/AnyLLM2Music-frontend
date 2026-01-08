@@ -75,12 +75,12 @@ export const useMusicGeneration = () => {
   };
 
   const handleGenerateMidi = async () => {
-    if (!rhythmData) return;
-    console.log('Generating MIDI with description:', description, 'and rhythmData:', rhythmData);
+    if (!editingPlan || !rhythmData) return;
+    console.log('Generating MIDI with plan:', editingPlan, 'and rhythmData:', rhythmData);
     setLoading(true);
     setError(null);
     try {
-      const data = await generateMidi(description, rhythmData);
+      const data = await generateMidi(editingPlan, rhythmData);
       console.log('MIDI generated:', data);
       setMidiData(data);
     } catch (error) {

@@ -55,14 +55,14 @@ export const generateRhythm = async (description: string, chords: ChordResponse)
   return response.json();
 };
 
-export const generateMidi = async (description: string, rhythm: RhythmResponse): Promise<MidiResponse> => {
+export const generateMidi = async (plan: MusicPlan, rhythm: RhythmResponse): Promise<MidiResponse> => {
   const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_MIDI}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      description,
+      music_plan: plan,
       music_rhythm: rhythm
     }),
   });

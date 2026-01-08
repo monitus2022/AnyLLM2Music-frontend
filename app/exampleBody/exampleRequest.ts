@@ -172,3 +172,8 @@ const music_rhythm_request = {
     ]
   }
 }
+
+const midi_request = {
+  "music_plan": {},
+  "music_rhythm": {}
+}
