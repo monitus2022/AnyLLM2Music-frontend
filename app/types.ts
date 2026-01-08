@@ -3,6 +3,10 @@ export interface MidiResponse {
   midi_data: string;
 }
 
+export interface AudioResponse {
+  audio_data: string;
+}
+
 export interface MusicPlan {
   genre_style: string;
   mood_emotion: string;

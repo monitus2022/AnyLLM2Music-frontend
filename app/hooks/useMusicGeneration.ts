@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { generatePlan, generateChords, generateRhythm, generateMidi } from '../services/apiService';
-import { MusicPlan, MidiResponse, Kwarg, ChordResponse, RhythmResponse } from '../types';
+import { generatePlan, generateChords, generateRhythm, generateMidi, convertMidiToAudio } from '../services/apiService';
+import { MusicPlan, MidiResponse, Kwarg, ChordResponse, RhythmResponse, AudioResponse } from '../types';
 
 export const useMusicGeneration = () => {
   const [description, setDescription] = useState('');
@@ -13,6 +13,9 @@ export const useMusicGeneration = () => {
   const [error, setError] = useState<string | null>(null);
   const [model, setModel] = useState('');
   const [kwargs, setKwargs] = useState<Kwarg[]>([]);
+  const [soundfont, setSoundfont] = useState('8-bit');
+  const [audioData, setAudioData] = useState<AudioResponse | null>(null);
+  const [loadingAudio, setLoadingAudio] = useState(false);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -89,6 +92,21 @@ export const useMusicGeneration = () => {
     }
   };
 
+  const handleConvertToAudio = async () => {
+    if (!midiData) return;
+    setLoadingAudio(true);
+    setError(null);
+    try {
+      const data = await convertMidiToAudio(soundfont, midiData.midi_data);
+      setAudioData(data);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      setError(errorMessage);
+    } finally {
+      setLoadingAudio(false);
+    }
+  };
+
   return {
     description,
     setDescription,
@@ -104,10 +122,15 @@ export const useMusicGeneration = () => {
     setModel,
     kwargs,
     setKwargs,
+    soundfont,
+    setSoundfont,
+    audioData,
+    loadingAudio,
     handleSubmit,
     handlePlanUpdate,
     handleSubmitPlan,
     handleGenerateRhythm,
     handleGenerateMidi,
+    handleConvertToAudio,
   };
 };

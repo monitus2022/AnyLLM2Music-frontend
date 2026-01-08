@@ -24,11 +24,16 @@ export default function Home() {
     setModel,
     kwargs,
     setKwargs,
+    soundfont,
+    setSoundfont,
+    audioData,
+    loadingAudio,
     handleSubmit,
     handlePlanUpdate,
     handleSubmitPlan,
     handleGenerateRhythm,
     handleGenerateMidi,
+    handleConvertToAudio,
   } = useMusicGeneration();
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -79,7 +84,14 @@ export default function Home() {
             </button>
           </div>
         )}
-        <MidiDisplay midiData={midiData} />
+        <MidiDisplay
+          midiData={midiData}
+          soundfont={soundfont}
+          setSoundfont={setSoundfont}
+          audioData={audioData}
+          loadingAudio={loadingAudio}
+          onConvertToAudio={handleConvertToAudio}
+        />
       </div>
     </div>
   );

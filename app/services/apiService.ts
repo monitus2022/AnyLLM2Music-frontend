@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../config';
 import { ENDPOINTS } from '../api';
-import { MusicPlan, ChordResponse, RhythmResponse, MidiResponse } from '../types';
+import { MusicPlan, ChordResponse, RhythmResponse, MidiResponse, AudioResponse } from '../types';
 
 export const generatePlan = async (description: string, model: string, kwargs: Record<string, string>): Promise<MusicPlan> => {
   const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`, {
@@ -64,6 +64,23 @@ export const generateMidi = async (plan: MusicPlan, rhythm: RhythmResponse): Pro
     body: JSON.stringify({
       music_plan: plan,
       music_rhythm: rhythm
+    }),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const convertMidiToAudio = async (soundfont: string, midiData: string): Promise<AudioResponse> => {
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.CONVERT_MIDI_TO_AUDIO}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      soundfont,
+      midi_data: midiData
     }),
   });
   if (!response.ok) {

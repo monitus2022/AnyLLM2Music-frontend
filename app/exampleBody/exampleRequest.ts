@@ -177,3 +177,8 @@ const midi_request = {
   "music_plan": {},
   "music_rhythm": {}
 }
+
+const convert_midi_to_audio_request = {
+  "soundfont": "8-bit",
+  "midi_data": "base64-encoded-midi-data"
+}

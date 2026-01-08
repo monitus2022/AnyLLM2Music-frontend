@@ -18,12 +18,13 @@ graph TD;
     B --> C[Chord Plan];
     C --> D[Rhythm Plan];
     D --> E[Notes Generation];
-    E --> F[Midi]
+    E --> F[Midi];
+    F --> G[Music];
 ```
 
 ## Progress (MVP)
 
-- [ ] Simple UI to enter description, returns midi
+- [x] Simple UI to enter description, returns midi
 - [ ] Midi convert to music and available for download, allow choice of soundfonts
 - [ ] Description generate music plan and available for preview, user interaction for updating
 - [ ] Editing after generating midi at preview stage
