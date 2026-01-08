@@ -76,13 +76,16 @@ export const useMusicGeneration = () => {
 
   const handleGenerateMidi = async () => {
     if (!rhythmData) return;
+    console.log('Generating MIDI with description:', description, 'and rhythmData:', rhythmData);
     setLoading(true);
     setError(null);
     try {
       const data = await generateMidi(description, rhythmData);
+      console.log('MIDI generated:', data);
       setMidiData(data);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('Error generating MIDI:', error);
       setError(errorMessage);
     } finally {
       setLoading(false);
