@@ -10,6 +10,17 @@ This repo includes the frontend UI for [AnyLLM2Music Backend](https://github.com
 - Returns midi object to frontend for preview
 - User decides to convert to audio file with soundfonts selected, available for download
 
+## Workflow
+
+```mermaid
+graph TD;
+    A[User music description] --> B[Music General Plan];
+    B --> C[Chord Plan];
+    C --> D[Rhythm Plan];
+    D --> E[Notes Generation];
+    E --> F[Midi]
+```
+
 ## Progress (MVP)
 
 - [ ] Simple UI to enter description, returns midi
