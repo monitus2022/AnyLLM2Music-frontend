@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import MusicForm from './MusicForm';
 import ErrorDisplay from './ErrorDisplay';
 import MusicPlanEditor from './MusicPlanEditor';
@@ -62,6 +62,8 @@ export default function MusicSlider({
   handleConvertToAudio,
 }: MusicSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [containerHeight, setContainerHeight] = useState<number | undefined>();
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Determine available slides based on data
   const getSlides = () => {
@@ -114,17 +116,6 @@ export default function MusicSlider({
         content: (
           <div className="space-y-4">
             <ChordDisplay chordData={chordData} />
-            {!rhythmData && (
-              <div className="mt-4">
-                <button
-                  onClick={handleGenerateRhythm}
-                  disabled={loading}
-                  className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
-                >
-                  {loading ? 'Generating Rhythm...' : 'Generate Rhythm'}
-                </button>
-              </div>
-            )}
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -138,17 +129,6 @@ export default function MusicSlider({
         content: (
           <div className="space-y-4">
             <RhythmDisplay rhythmData={rhythmData} />
-            {!midiData && (
-              <div className="mt-4">
-                <button
-                  onClick={handleGenerateMidi}
-                  disabled={loading}
-                  className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
-                >
-                  {loading ? 'Generating MIDI...' : 'Generate MIDI'}
-                </button>
-              </div>
-            )}
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -188,6 +168,14 @@ export default function MusicSlider({
     else if (midiData && currentSlide === 3) setCurrentSlide(4);
   }, [musicPlan, chordData, rhythmData, midiData, currentSlide]);
 
+  // Update container height to fit current slide
+  useEffect(() => {
+    const currentRef = slideRefs.current[currentSlide];
+    if (currentRef) {
+      setContainerHeight(currentRef.offsetHeight);
+    }
+  }, [currentSlide, slides]);
+
   const canGoNext = () => {
     switch (currentSlide) {
       case 0: return !!musicPlan;
@@ -212,55 +200,19 @@ export default function MusicSlider({
 
   return (
     <div className="relative w-full max-w-4xl mx-auto">
-      {/* Navigation Arrows */}
-      {currentSlide > 0 && (
-        <button
-          onClick={prevSlide}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-50"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-      )}
-
-      {(currentSlide < slides.length - 1 && canGoNext()) && (
-        <button
-          onClick={nextSlide}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white border border-gray-300 rounded-full p-2 shadow-md hover:bg-gray-50"
-        >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
-        </button>
-      )}
-
       {/* Slider Container */}
       <div className="overflow-hidden rounded-lg shadow-lg">
         <div
           className="flex transition-transform duration-300 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          style={{ transform: `translateX(-${currentSlide * 100}%)`, height: containerHeight ? `${containerHeight}px` : 'auto' }}
         >
           {slides.map((slide) => (
-            <div key={slide.id} className="w-full flex-shrink-0 p-6 bg-white">
+            <div key={slide.id} ref={(el) => { slideRefs.current[slide.id] = el; }} className="w-full flex-shrink-0 p-6 bg-white">
               <h2 className="text-xl font-semibold mb-4 text-gray-800">{slide.title}</h2>
               {slide.content}
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Slide Indicators */}
-      <div className="flex justify-center mt-4 space-x-2">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full ${
-              index === currentSlide ? 'bg-blue-500' : 'bg-gray-300'
-            }`}
-          />
-        ))}
       </div>
     </div>
   );
