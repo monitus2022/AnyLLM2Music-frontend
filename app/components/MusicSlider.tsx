@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MusicForm from './MusicForm';
 import ErrorDisplay from './ErrorDisplay';
 import MusicPlanEditor from './MusicPlanEditor';
@@ -180,6 +180,13 @@ export default function MusicSlider({
 
   const slides = getSlides();
 
+  // Auto-advance to next slide when new data is available
+  useEffect(() => {
+    if (musicPlan && currentSlide === 0) setCurrentSlide(1);
+    else if (chordData && currentSlide === 1) setCurrentSlide(2);
+    else if (rhythmData && currentSlide === 2) setCurrentSlide(3);
+    else if (midiData && currentSlide === 3) setCurrentSlide(4);
+  }, [musicPlan, chordData, rhythmData, midiData, currentSlide]);
 
   const canGoNext = () => {
     switch (currentSlide) {
@@ -235,7 +242,7 @@ export default function MusicSlider({
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {slides.map((slide) => (
-            <div key={slide.id} className="w-full flex-shrink-0 p-6 bg-white min-h-[600px]">
+            <div key={slide.id} className="w-full flex-shrink-0 p-6 bg-white">
               <h2 className="text-xl font-semibold mb-4 text-gray-800">{slide.title}</h2>
               {slide.content}
             </div>
