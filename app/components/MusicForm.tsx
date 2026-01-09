@@ -11,6 +11,30 @@ interface MusicFormProps {
   loading: boolean;
 }
 
+const modelOptions = [
+  'x-ai/grok-4.1-fast',
+  'openai/gpt-4',
+  'anthropic/claude-3'
+];
+
+const parameterOptions = [
+  'genre_style',
+  'tempo',
+  'key',
+  'time_signature',
+  'duration_seconds',
+  'mood_emotion'
+];
+
+const parameterHints: Record<string, string> = {
+  genre_style: '8-bit chiptune',
+  tempo: '120 BPM',
+  key: 'C minor',
+  time_signature: '4/4',
+  duration_seconds: '30',
+  mood_emotion: 'energetic'
+};
+
 export default function MusicForm({
   description,
   setDescription,
@@ -32,39 +56,48 @@ export default function MusicForm({
       />
       <div className="mb-4">
         <label className="block text-sm font-medium mb-1 text-black">Model:</label>
-        <input
-          type="text"
+        <select
           value={model}
           onChange={(e) => setModel(e.target.value)}
-          placeholder="Enter model name (leave empty for default)"
           className="w-full p-2 border rounded text-black"
-        />
+        >
+          {modelOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2 text-black">Additional Parameters (kwargs):</label>
+        <label className="block text-sm font-medium mb-2 text-black">Additional Parameters:</label>
         {kwargs.map((param, index) => (
           <div key={index} className="flex gap-2 mb-2">
-            <input
-              type="text"
-              placeholder="Key"
+            <select
               value={param.key}
               onChange={(e) => {
                 const newKwargs = [...kwargs];
                 newKwargs[index].key = e.target.value;
                 setKwargs(newKwargs);
               }}
-              className="w-32 p-2 border rounded text-black"
-            />
+              className="w-40 p-2 border rounded text-black"
+            >
+              <option value="">Select Parameter</option>
+              {parameterOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option.replace('_', ' ')}
+                </option>
+              ))}
+            </select>
             <input
               type="text"
-              placeholder="Value"
+              placeholder={parameterHints[param.key] || 'Value'}
               value={param.value}
               onChange={(e) => {
                 const newKwargs = [...kwargs];
                 newKwargs[index].value = e.target.value;
                 setKwargs(newKwargs);
               }}
-              className="w-32 p-2 border rounded text-black"
+              className="w-40 p-2 border rounded text-black"
             />
             <button
               onClick={() => {

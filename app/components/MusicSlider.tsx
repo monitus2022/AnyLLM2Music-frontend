@@ -62,7 +62,6 @@ export default function MusicSlider({
   handleConvertToAudio,
 }: MusicSliderProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [containerHeight, setContainerHeight] = useState<number | undefined>();
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // Determine available slides based on data
@@ -168,13 +167,6 @@ export default function MusicSlider({
     else if (midiData && currentSlide === 3) setCurrentSlide(4);
   }, [musicPlan, chordData, rhythmData, midiData, currentSlide]);
 
-  // Update container height to fit current slide
-  useEffect(() => {
-    const currentRef = slideRefs.current[currentSlide];
-    if (currentRef) {
-      setContainerHeight(currentRef.offsetHeight);
-    }
-  }, [currentSlide, slides]);
 
   const canGoNext = () => {
     switch (currentSlide) {
@@ -204,7 +196,7 @@ export default function MusicSlider({
       <div className="overflow-hidden rounded-lg shadow-lg">
         <div
           className="flex transition-transform duration-300 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)`, height: containerHeight ? `${containerHeight}px` : 'auto' }}
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
           {slides.map((slide) => (
             <div key={slide.id} ref={(el) => { slideRefs.current[slide.id] = el; }} className="w-full flex-shrink-0 p-6 bg-white">

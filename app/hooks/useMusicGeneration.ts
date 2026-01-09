@@ -11,7 +11,7 @@ export const useMusicGeneration = () => {
   const [musicPlan, setMusicPlan] = useState<MusicPlan | null>(null);
   const [editingPlan, setEditingPlan] = useState<MusicPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [model, setModel] = useState('');
+  const [model, setModel] = useState('x-ai/grok-4.1-fast');
   const [kwargs, setKwargs] = useState<Kwarg[]>([]);
   const [soundfont, setSoundfont] = useState('8-bit');
   const [audioData, setAudioData] = useState<AudioResponse | null>(null);

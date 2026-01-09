@@ -11,7 +11,8 @@ export const generatePlan = async (description: string, model: string, kwargs: R
     body: JSON.stringify({
       description,
       model,
-      kwargs
+      music_parameters: kwargs,
+      kwargs: {}
     }),
   });
   if (!response.ok) {

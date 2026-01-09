@@ -1,9 +1,15 @@
 const music_plan_request = {
   "description": "8-bit music",
-  "model": "",
-  "kwargs": {
-    "hint": ""
-  }
+  "model": "x-ai/grok-4.1-fast",
+  "music_parameters": {
+    "genre_style": "8-bit chiptune",
+    "tempo": "120 BPM",
+    "key": "C minor",
+    "time_signature": "4/4",
+    "duration_seconds": 30,
+    "mood_emotion": "energetic",
+  },
+  "kwargs": {}
 }
 
 const music_chord_request = {
