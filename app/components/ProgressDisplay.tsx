@@ -1,4 +1,3 @@
-import type { ProgressMessage } from '../types/api';
 import type { ProgressDisplayProps } from '../types/components';
 
 export default function ProgressDisplay({ progress, loading }: ProgressDisplayProps) {

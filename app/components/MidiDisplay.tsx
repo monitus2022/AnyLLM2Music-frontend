@@ -1,4 +1,3 @@
-import type { MidiResponse, AudioResponse } from '../types/api';
 import { SOUND_FONTS } from '../types/common';
 import type { MidiDisplayProps } from '../types/components';
 

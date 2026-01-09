@@ -1,4 +1,3 @@
-import type { Kwarg } from '../types/common';
 import type { MusicFormProps } from '../types/components';
 
 const modelOptions = [

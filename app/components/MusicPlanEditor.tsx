@@ -1,4 +1,3 @@
-import type { MusicPlan } from '../types/music';
 import type { MusicPlanEditorProps } from '../types/components';
 
 export default function MusicPlanEditor({

@@ -1,4 +1,3 @@
-import type { ChordResponse } from '../types/music';
 import type { ChordDisplayProps } from '../types/components';
 
 export default function ChordDisplay({ chordData }: ChordDisplayProps) {

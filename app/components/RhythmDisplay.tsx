@@ -1,4 +1,3 @@
-import type { RhythmResponse } from '../types/music';
 import type { RhythmDisplayProps } from '../types/components';
 
 export default function RhythmDisplay({ rhythmData }: RhythmDisplayProps) {

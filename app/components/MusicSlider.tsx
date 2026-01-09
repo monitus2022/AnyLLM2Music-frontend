@@ -8,7 +8,6 @@ import ChordDisplay from './ChordDisplay';
 import RhythmDisplay from './RhythmDisplay';
 import MidiDisplay from './MidiDisplay';
 import ProgressDisplay from './ProgressDisplay';
-import type { ProgressMessage } from '../types/api';
 import type { MusicSliderProps } from '../types/components';
 
 export default function MusicSlider({
