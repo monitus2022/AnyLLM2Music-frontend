@@ -69,4 +69,15 @@ export interface RhythmResponse {
   sections: RhythmSection[];
 }
 
+export interface ProgressMessage {
+  type: 'progress' | 'error' | 'complete';
+  stage: string;
+  message: string;
+}
+
+export interface ApiResponse<T> {
+  result: T;
+  session_id?: string;
+}
+
 export const SOUND_FONTS = ['8-bit', '8MBGMGS'];

@@ -7,6 +7,8 @@ import MusicPlanEditor from './MusicPlanEditor';
 import ChordDisplay from './ChordDisplay';
 import RhythmDisplay from './RhythmDisplay';
 import MidiDisplay from './MidiDisplay';
+import ProgressDisplay from './ProgressDisplay';
+import { ProgressMessage } from '../types';
 
 interface MusicSliderProps {
   description: string;
@@ -27,6 +29,7 @@ interface MusicSliderProps {
   setSoundfont: (soundfont: string) => void;
   audioData: any;
   loadingAudio: boolean;
+  progress: ProgressMessage[];
   handleSubmit: () => void;
   handlePlanUpdate: (field: string, value: any) => void;
   handleSubmitPlan: () => void;
@@ -54,6 +57,7 @@ export default function MusicSlider({
   setSoundfont,
   audioData,
   loadingAudio,
+  progress,
   handleSubmit,
   handlePlanUpdate,
   handleSubmitPlan,
@@ -82,6 +86,7 @@ export default function MusicSlider({
               onSubmit={handleSubmit}
               loading={loading}
             />
+            <ProgressDisplay progress={progress} loading={loading} />
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -102,6 +107,7 @@ export default function MusicSlider({
               onSubmitPlan={handleSubmitPlan}
               loading={loading}
             />
+            <ProgressDisplay progress={progress} loading={loading} />
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -122,6 +128,7 @@ export default function MusicSlider({
             >
               {loading ? 'Generating Rhythm...' : 'Generate Rhythm'}
             </button>
+            <ProgressDisplay progress={progress} loading={loading} />
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -142,6 +149,7 @@ export default function MusicSlider({
             >
               {loading ? 'Generating MIDI...' : 'Generate MIDI'}
             </button>
+            <ProgressDisplay progress={progress} loading={loading} />
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -162,6 +170,7 @@ export default function MusicSlider({
               loadingAudio={loadingAudio}
               onConvertToAudio={handleConvertToAudio}
             />
+            <ProgressDisplay progress={progress} loading={loadingAudio} />
             <ErrorDisplay error={error} />
           </div>
         ),

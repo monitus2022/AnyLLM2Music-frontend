@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { generatePlan, generateChords, generateRhythm, generateMidi, convertMidiToAudio } from '../services/apiService';
-import { MusicPlan, MidiResponse, Kwarg, ChordResponse, RhythmResponse, AudioResponse } from '../types';
+import { MusicPlan, MidiResponse, Kwarg, ChordResponse, RhythmResponse, AudioResponse, ProgressMessage } from '../types';
+import { API_BASE_URL } from '../config';
 
 export const useMusicGeneration = () => {
   const [description, setDescription] = useState('');
@@ -16,6 +17,35 @@ export const useMusicGeneration = () => {
   const [soundfont, setSoundfont] = useState('8-bit');
   const [audioData, setAudioData] = useState<AudioResponse | null>(null);
   const [loadingAudio, setLoadingAudio] = useState(false);
+  const [progress, setProgress] = useState<ProgressMessage[]>([]);
+  const wsRef = useRef<WebSocket | null>(null);
+
+  const connectWebSocket = (sessionId: string) => {
+    if (wsRef.current) {
+      wsRef.current.close();
+    }
+    const wsUrl = API_BASE_URL.replace(/^http/, 'ws') + `/v1/music/ws/progress/${sessionId}`;
+    const ws = new WebSocket(wsUrl);
+    wsRef.current = ws;
+
+    ws.onopen = () => {
+      setProgress([]);
+    };
+
+    ws.onmessage = (event) => {
+      const message: ProgressMessage = JSON.parse(event.data);
+      setProgress(prev => [...prev, message]);
+    };
+
+    ws.onclose = () => {
+      // Cleanup
+    };
+
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      setProgress(prev => [...prev, { type: 'error', stage: 'websocket', message: 'Connection error' }]);
+    };
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -30,9 +60,12 @@ export const useMusicGeneration = () => {
         if (key.trim()) acc[key.trim()] = value.trim();
         return acc;
       }, {} as Record<string, string>);
-      const data = await generatePlan(description, model, kwargsObj);
-      setMusicPlan(data);
-      setEditingPlan({ ...data });
+      const { result, session_id } = await generatePlan(description, model, kwargsObj);
+      setMusicPlan(result);
+      setEditingPlan({ ...result });
+      if (session_id) {
+        connectWebSocket(session_id);
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
@@ -52,8 +85,11 @@ export const useMusicGeneration = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await generateChords(description, editingPlan);
-      setChordData(data);
+      const { result, session_id } = await generateChords(description, editingPlan);
+      setChordData(result);
+      if (session_id) {
+        connectWebSocket(session_id);
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
@@ -67,8 +103,11 @@ export const useMusicGeneration = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await generateRhythm(description, chordData);
-      setRhythmData(data);
+      const { result, session_id } = await generateRhythm(description, chordData);
+      setRhythmData(result);
+      if (session_id) {
+        connectWebSocket(session_id);
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
@@ -82,8 +121,11 @@ export const useMusicGeneration = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await generateMidi(editingPlan, rhythmData);
-      setMidiData(data);
+      const { result, session_id } = await generateMidi(editingPlan, rhythmData);
+      setMidiData(result);
+      if (session_id) {
+        connectWebSocket(session_id);
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
@@ -97,8 +139,11 @@ export const useMusicGeneration = () => {
     setLoadingAudio(true);
     setError(null);
     try {
-      const data = await convertMidiToAudio(soundfont, midiData.midi_data);
-      setAudioData(data);
+      const { result, session_id } = await convertMidiToAudio(soundfont, midiData.midi_data);
+      setAudioData(result);
+      if (session_id) {
+        connectWebSocket(session_id);
+      }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       setError(errorMessage);
@@ -106,6 +151,14 @@ export const useMusicGeneration = () => {
       setLoadingAudio(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
+  }, []);
 
   return {
     description,
@@ -126,6 +179,7 @@ export const useMusicGeneration = () => {
     setSoundfont,
     audioData,
     loadingAudio,
+    progress,
     handleSubmit,
     handlePlanUpdate,
     handleSubmitPlan,

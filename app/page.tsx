@@ -23,6 +23,7 @@ export default function Home() {
     setSoundfont,
     audioData,
     loadingAudio,
+    progress,
     handleSubmit,
     handlePlanUpdate,
     handleSubmitPlan,
@@ -56,6 +57,7 @@ export default function Home() {
           setSoundfont={setSoundfont}
           audioData={audioData}
           loadingAudio={loadingAudio}
+          progress={progress}
           handleSubmit={handleSubmit}
           handlePlanUpdate={handlePlanUpdate}
           handleSubmitPlan={handleSubmitPlan}
