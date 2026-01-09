@@ -68,3 +68,5 @@ export interface RhythmSection {
 export interface RhythmResponse {
   sections: RhythmSection[];
 }
+
+export const SOUND_FONTS = ['8-bit', '8MBGMGS'];

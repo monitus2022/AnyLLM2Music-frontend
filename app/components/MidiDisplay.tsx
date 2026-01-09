@@ -1,4 +1,4 @@
-import { MidiResponse, AudioResponse } from '../types';
+import { MidiResponse, AudioResponse, SOUND_FONTS } from '../types';
 
 interface MidiDisplayProps {
   midiData: MidiResponse | null;
@@ -73,7 +73,7 @@ export default function MidiDisplay({
           onChange={(e) => setSoundfont(e.target.value)}
           className="border border-gray-300 rounded p-2 mb-2"
         >
-          <option value="8-bit">8-bit</option>
+          {SOUND_FONTS.map(sf => <option key={sf} value={sf}>{sf}</option>)}
         </select>
         <button
           onClick={onConvertToAudio}
