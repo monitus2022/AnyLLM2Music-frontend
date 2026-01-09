@@ -1,6 +1,4 @@
-interface ErrorDisplayProps {
-  error: string | null;
-}
+import type { ErrorDisplayProps } from '../types/components';
 
 export default function ErrorDisplay({ error }: ErrorDisplayProps) {
   if (!error) return null;

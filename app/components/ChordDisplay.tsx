@@ -1,8 +1,5 @@
-import { ChordResponse } from '../types';
-
-interface ChordDisplayProps {
-  chordData: ChordResponse | null;
-}
+import type { ChordResponse } from '../types/music';
+import type { ChordDisplayProps } from '../types/components';
 
 export default function ChordDisplay({ chordData }: ChordDisplayProps) {
   if (!chordData) return null;

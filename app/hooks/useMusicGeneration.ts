@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { generatePlan, generateChords, generateRhythm, generateMidi, convertMidiToAudio } from '../services/apiService';
-import { MusicPlan, MidiResponse, Kwarg, ChordResponse, RhythmResponse, AudioResponse, ProgressMessage } from '../types';
+import type { MusicPlan, ChordResponse, RhythmResponse } from '../types/music';
+import type { MidiResponse, AudioResponse, ProgressMessage } from '../types/api';
+import type { Kwarg } from '../types/common';
 import { API_BASE_URL } from '../config';
 
 export const useMusicGeneration = () => {

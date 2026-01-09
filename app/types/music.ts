@@ -1,12 +1,3 @@
-export interface MidiResponse {
-  description: string;
-  midi_data: string;
-}
-
-export interface AudioResponse {
-  audio_data: string;
-}
-
 export interface MusicPlan {
   genre_style: string;
   mood_emotion: string;
@@ -32,11 +23,6 @@ export interface MusicPlan {
     duration_seconds: string;
   };
   looping_behavior: string;
-}
-
-export interface Kwarg {
-  key: string;
-  value: string;
 }
 
 export interface ChordSection {
@@ -68,16 +54,3 @@ export interface RhythmSection {
 export interface RhythmResponse {
   sections: RhythmSection[];
 }
-
-export interface ProgressMessage {
-  type: 'progress' | 'error' | 'complete';
-  stage: string;
-  message: string;
-}
-
-export interface ApiResponse<T> {
-  result: T;
-  session_id?: string;
-}
-
-export const SOUND_FONTS = ['8-bit', '8MBGMGS'];

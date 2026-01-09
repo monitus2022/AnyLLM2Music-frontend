@@ -1,6 +1,7 @@
 import { API_BASE_URL } from '../config';
 import { ENDPOINTS } from '../api';
-import { MusicPlan, ChordResponse, RhythmResponse, MidiResponse, AudioResponse, ApiResponse } from '../types';
+import type { MusicPlan, ChordResponse, RhythmResponse } from '../types/music';
+import type { MidiResponse, AudioResponse, ApiResponse } from '../types/api';
 
 export const generatePlan = async (description: string, model: string, kwargs: Record<string, string>): Promise<{ result: MusicPlan; session_id?: string }> => {
   const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`, {

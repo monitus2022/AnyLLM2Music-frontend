@@ -1,13 +1,5 @@
-import { MusicPlan } from '../types';
-
-interface MusicPlanEditorProps {
-  musicPlan: MusicPlan | null;
-  editingPlan: MusicPlan | null;
-  setEditingPlan: (plan: MusicPlan | null) => void;
-  onPlanUpdate: (field: string, value: any) => void;
-  onSubmitPlan: () => void;
-  loading: boolean;
-}
+import type { MusicPlan } from '../types/music';
+import type { MusicPlanEditorProps } from '../types/components';
 
 export default function MusicPlanEditor({
   musicPlan,

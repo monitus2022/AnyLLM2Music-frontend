@@ -1,15 +1,5 @@
-import { Kwarg } from '../types';
-
-interface MusicFormProps {
-  description: string;
-  setDescription: (value: string) => void;
-  model: string;
-  setModel: (value: string) => void;
-  kwargs: Kwarg[];
-  setKwargs: (value: Kwarg[]) => void;
-  onSubmit: () => void;
-  loading: boolean;
-}
+import type { Kwarg } from '../types/common';
+import type { MusicFormProps } from '../types/components';
 
 const modelOptions = [
   'x-ai/grok-4.1-fast',

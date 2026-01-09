@@ -1,9 +1,5 @@
-import { ProgressMessage } from '../types';
-
-interface ProgressDisplayProps {
-  progress: ProgressMessage[];
-  loading: boolean;
-}
+import type { ProgressMessage } from '../types/api';
+import type { ProgressDisplayProps } from '../types/components';
 
 export default function ProgressDisplay({ progress, loading }: ProgressDisplayProps) {
   if (!loading && progress.length === 0) return null;

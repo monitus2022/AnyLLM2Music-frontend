@@ -1,13 +1,6 @@
-import { MidiResponse, AudioResponse, SOUND_FONTS } from '../types';
-
-interface MidiDisplayProps {
-  midiData: MidiResponse | null;
-  soundfont: string;
-  setSoundfont: (value: string) => void;
-  audioData: AudioResponse | null;
-  loadingAudio: boolean;
-  onConvertToAudio: () => void;
-}
+import type { MidiResponse, AudioResponse } from '../types/api';
+import { SOUND_FONTS } from '../types/common';
+import type { MidiDisplayProps } from '../types/components';
 
 export default function MidiDisplay({
   midiData,

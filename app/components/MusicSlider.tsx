@@ -8,35 +8,8 @@ import ChordDisplay from './ChordDisplay';
 import RhythmDisplay from './RhythmDisplay';
 import MidiDisplay from './MidiDisplay';
 import ProgressDisplay from './ProgressDisplay';
-import { ProgressMessage } from '../types';
-
-interface MusicSliderProps {
-  description: string;
-  setDescription: (desc: string) => void;
-  loading: boolean;
-  midiData: any;
-  chordData: any;
-  rhythmData: any;
-  musicPlan: any;
-  editingPlan: any;
-  setEditingPlan: (plan: any) => void;
-  error: string | null;
-  model: string;
-  setModel: (model: string) => void;
-  kwargs: any[];
-  setKwargs: (kwargs: any[]) => void;
-  soundfont: string;
-  setSoundfont: (soundfont: string) => void;
-  audioData: any;
-  loadingAudio: boolean;
-  progress: ProgressMessage[];
-  handleSubmit: () => void;
-  handlePlanUpdate: (field: string, value: any) => void;
-  handleSubmitPlan: () => void;
-  handleGenerateRhythm: () => void;
-  handleGenerateMidi: () => void;
-  handleConvertToAudio: () => void;
-}
+import type { ProgressMessage } from '../types/api';
+import type { MusicSliderProps } from '../types/components';
 
 export default function MusicSlider({
   description,
