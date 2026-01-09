@@ -13,14 +13,14 @@ interface MusicFormProps {
 
 const modelOptions = [
   'x-ai/grok-4.1-fast',
-  'openai/gpt-4',
-  'anthropic/claude-3'
+  // 'openai/gpt-4',
+  // 'anthropic/claude-3'
 ];
 
 const parameterOptions = [
   'genre_style',
-  'tempo',
-  'key',
+  'tempo_bpm',
+  'key_tonality',
   'time_signature',
   'duration_seconds',
   'mood_emotion'
@@ -28,8 +28,8 @@ const parameterOptions = [
 
 const parameterHints: Record<string, string> = {
   genre_style: '8-bit chiptune',
-  tempo: '120 BPM',
-  key: 'C minor',
+  tempo_bpm: '120 BPM',
+  key_tonality: 'C minor',
   time_signature: '4/4',
   duration_seconds: '30',
   mood_emotion: 'energetic'
