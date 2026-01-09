@@ -3,30 +3,30 @@ import { ENDPOINTS } from '../api';
 import { MusicPlan, ChordResponse, RhythmResponse, MidiResponse, AudioResponse, ApiResponse } from '../types';
 
 export const generatePlan = async (description: string, model: string, kwargs: Record<string, string>): Promise<{ result: MusicPlan; session_id?: string }> => {
-  const url = `${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`;
-  const body = JSON.stringify({
-    description,
-    model,
-    music_parameters: kwargs,
-    kwargs: {}
-  });
-  console.log('Fetching:', url, 'with body:', body);
-  const response = await fetch(url, {
+  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body,
+    body: JSON.stringify({
+      description,
+      model,
+      music_parameters: kwargs,
+      kwargs: {}
+    }),
   });
-  console.log('Response status:', response.status, response.statusText);
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('Response error text:', errorText);
     throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
   }
-  const data: ApiResponse<MusicPlan> = await response.json();
-  console.log('Parsed response data:', data);
-  return { result: data.result, session_id: data.session_id };
+  const data = await response.json();
+  // Handle both wrapped and unwrapped responses
+  if (data.result !== undefined) {
+    return { result: data.result, session_id: data.session_id };
+  } else {
+    // Assume data is the result directly
+    return { result: data as MusicPlan, session_id: undefined };
+  }
 };
 
 export const generateChords = async (description: string, plan: MusicPlan): Promise<{ result: ChordResponse; session_id?: string }> => {
@@ -43,8 +43,14 @@ export const generateChords = async (description: string, plan: MusicPlan): Prom
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
-  const data: ApiResponse<ChordResponse> = await response.json();
-  return { result: data.result, session_id: data.session_id };
+  const data = await response.json();
+  // Handle both wrapped and unwrapped responses
+  if (data.result !== undefined) {
+    return { result: data.result, session_id: data.session_id };
+  } else {
+    // Assume data is the result directly
+    return { result: data as ChordResponse, session_id: undefined };
+  }
 };
 
 // Future functions for rhythm and midi
@@ -62,8 +68,14 @@ export const generateRhythm = async (description: string, chords: ChordResponse)
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
-  const data: ApiResponse<RhythmResponse> = await response.json();
-  return { result: data.result, session_id: data.session_id };
+  const data = await response.json();
+  // Handle both wrapped and unwrapped responses
+  if (data.result !== undefined) {
+    return { result: data.result, session_id: data.session_id };
+  } else {
+    // Assume data is the result directly
+    return { result: data as RhythmResponse, session_id: undefined };
+  }
 };
 
 export const generateMidi = async (plan: MusicPlan, rhythm: RhythmResponse): Promise<{ result: MidiResponse; session_id?: string }> => {
@@ -80,8 +92,14 @@ export const generateMidi = async (plan: MusicPlan, rhythm: RhythmResponse): Pro
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
-  const data: ApiResponse<MidiResponse> = await response.json();
-  return { result: data.result, session_id: data.session_id };
+  const data = await response.json();
+  // Handle both wrapped and unwrapped responses
+  if (data.result !== undefined) {
+    return { result: data.result, session_id: data.session_id };
+  } else {
+    // Assume data is the result directly
+    return { result: data as MidiResponse, session_id: undefined };
+  }
 };
 
 export const convertMidiToAudio = async (soundfont: string, midiData: string): Promise<{ result: AudioResponse; session_id?: string }> => {
@@ -98,6 +116,12 @@ export const convertMidiToAudio = async (soundfont: string, midiData: string): P
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
   }
-  const data: ApiResponse<AudioResponse> = await response.json();
-  return { result: data.result, session_id: data.session_id };
+  const data = await response.json();
+  // Handle both wrapped and unwrapped responses
+  if (data.result !== undefined) {
+    return { result: data.result, session_id: data.session_id };
+  } else {
+    // Assume data is the result directly
+    return { result: data as AudioResponse, session_id: undefined };
+  }
 };

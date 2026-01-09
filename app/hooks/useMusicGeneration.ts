@@ -48,7 +48,6 @@ export const useMusicGeneration = () => {
   };
 
   const handleSubmit = async () => {
-    console.log('Starting plan generation with description:', description);
     setLoading(true);
     setError(null);
     setMidiData(null);
@@ -61,22 +60,16 @@ export const useMusicGeneration = () => {
         if (key.trim()) acc[key.trim()] = value.trim();
         return acc;
       }, {} as Record<string, string>);
-      console.log('Calling generatePlan with:', { description, model, kwargsObj });
       const { result, session_id } = await generatePlan(description, model, kwargsObj);
-      console.log('generatePlan response:', { result, session_id });
       setMusicPlan(result);
       setEditingPlan({ ...result });
-      console.log('Music plan set:', result);
       if (session_id) {
-        console.log('Connecting websocket with session_id:', session_id);
         connectWebSocket(session_id);
-      } else {
-        console.log('No session_id returned, skipping websocket');
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Error generating plan:', error);
       setError(errorMessage);
+      console.error('Error generating plan:', error);
     } finally {
       setLoading(false);
     }
