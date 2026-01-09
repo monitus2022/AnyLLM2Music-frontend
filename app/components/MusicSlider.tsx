@@ -115,6 +115,13 @@ export default function MusicSlider({
         content: (
           <div className="space-y-4">
             <ChordDisplay chordData={chordData} />
+            <button
+              onClick={handleGenerateRhythm}
+              disabled={loading}
+              className="w-full bg-green-500 text-white p-2 rounded mb-4 disabled:opacity-50"
+            >
+              {loading ? 'Generating Rhythm...' : 'Generate Rhythm'}
+            </button>
             <ErrorDisplay error={error} />
           </div>
         ),
@@ -128,6 +135,13 @@ export default function MusicSlider({
         content: (
           <div className="space-y-4">
             <RhythmDisplay rhythmData={rhythmData} />
+            <button
+              onClick={handleGenerateMidi}
+              disabled={loading}
+              className="w-full bg-purple-500 text-white p-2 rounded mb-4 disabled:opacity-50"
+            >
+              {loading ? 'Generating MIDI...' : 'Generate MIDI'}
+            </button>
             <ErrorDisplay error={error} />
           </div>
         ),
