@@ -3,22 +3,29 @@ import { ENDPOINTS } from '../api';
 import { MusicPlan, ChordResponse, RhythmResponse, MidiResponse, AudioResponse, ApiResponse } from '../types';
 
 export const generatePlan = async (description: string, model: string, kwargs: Record<string, string>): Promise<{ result: MusicPlan; session_id?: string }> => {
-  const response = await fetch(`${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`, {
+  const url = `${API_BASE_URL}${ENDPOINTS.GENERATE_PLAN}`;
+  const body = JSON.stringify({
+    description,
+    model,
+    music_parameters: kwargs,
+    kwargs: {}
+  });
+  console.log('Fetching:', url, 'with body:', body);
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      description,
-      model,
-      music_parameters: kwargs,
-      kwargs: {}
-    }),
+    body,
   });
+  console.log('Response status:', response.status, response.statusText);
   if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    const errorText = await response.text();
+    console.error('Response error text:', errorText);
+    throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
   }
   const data: ApiResponse<MusicPlan> = await response.json();
+  console.log('Parsed response data:', data);
   return { result: data.result, session_id: data.session_id };
 };
 
