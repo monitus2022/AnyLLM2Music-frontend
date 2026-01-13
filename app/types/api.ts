@@ -11,6 +11,7 @@ export interface ProgressMessage {
   type: 'progress' | 'error' | 'complete';
   stage: string;
   message: string;
+  percentage?: number;
 }
 
 export interface ApiResponse<T> {
